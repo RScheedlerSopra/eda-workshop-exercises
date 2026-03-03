@@ -24,7 +24,7 @@ public class DocumentsController : ControllerBase
             Content = ms.ToArray()
         };
 
-        await messageSession.Send(command);
+        await messageSession.SendLocal(command);
 
         return Accepted();
     }

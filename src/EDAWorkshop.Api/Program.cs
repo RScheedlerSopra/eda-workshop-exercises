@@ -6,6 +6,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddControllers();
+
 // Configure NServiceBus with the Learning Transport (for local development)
 var endpointConfiguration = new EndpointConfiguration("EDAWorkshop");
 endpointConfiguration.UseSerialization<SystemJsonSerializer>();
@@ -24,6 +26,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
 
 var summaries = new[]
 {
