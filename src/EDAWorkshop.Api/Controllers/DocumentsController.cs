@@ -12,16 +12,22 @@ public class DocumentsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Upload(IFormFile file)
+    public async Task<IActionResult> Upload(
+        IFormFile file,
+        [FromServices] IBlobStorage blobStorage)
     {
         using var ms = new MemoryStream();
         await file.CopyToAsync(ms);
+
+        var blobKey = await blobStorage.SaveAsync(
+            ms.ToArray(),
+            file.FileName);
 
         var command = new ProcessDocument
         {
             DocumentId = Guid.NewGuid(),
             FileName = file.FileName,
-            Content = ms.ToArray()
+            BlobKey = blobKey
         };
 
         await messageSession.SendLocal(command);

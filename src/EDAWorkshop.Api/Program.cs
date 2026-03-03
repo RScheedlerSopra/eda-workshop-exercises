@@ -8,6 +8,8 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddControllers();
 
+builder.Services.AddSingleton<IBlobStorage, FileSystemBlobStorage>();
+
 // Configure NServiceBus with the Learning Transport (for local development)
 var endpointConfiguration = new EndpointConfiguration("EDAWorkshop");
 endpointConfiguration.UseSerialization<SystemJsonSerializer>();
