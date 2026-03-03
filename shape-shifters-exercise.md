@@ -4,7 +4,7 @@ In this exercise we will learn how to deal with changing message schemas in an e
 ## Context & Assumptions
 Assume that you are working in a system (the API) that is already in production and that messages are constantly flowing through the system. Messages (events) are sent to it by a different application via ServiceBus. 
 
-You do not have the option of updating the producer of the messages at the same time as this API.
+You do not have the option of updating the producer of the messages at the same time as this API. You can however assume that changes made to events (or newly added events) will eventually be implemented by the producer.
 
 All code you need for the exercises below can be found in the ShapeShifters folder in the API project.
 

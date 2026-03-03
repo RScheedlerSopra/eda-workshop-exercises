@@ -12,7 +12,18 @@ public class PatientRegisteredHandler
             PatientId = message.PatientId,
             Name = message.Name,
             DateOfBirth = message.DateOfBirth,
-            BSN = message.BSN
+            BSN = "" // We do not want to process BSN anymore even when we receive it in an old event
+        };
+    }
+
+    public void Handle(PatientRegisteredV2 message)
+    {
+        _storage[message.PatientId] = new Patient
+        {
+            PatientId = message.PatientId,
+            Name = message.Name,
+            DateOfBirth = message.DateOfBirth,
+            BSN = ""
         };
     }
 }
