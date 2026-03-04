@@ -7,7 +7,10 @@ public class AppointmentScheduledHandler
 
     public void Handle(AppointmentScheduled message)
     {
-        if (!IsBeforeStartOfNextMonth(message.ScheduledAt))
+        // V1: ScheduledAt is local time, convert to UTC for consistent storage
+        var scheduledAtUtc = message.ScheduledAt.ToUniversalTime();
+
+        if (!IsBeforeStartOfNextMonth(scheduledAtUtc))
         {
             return;
         }
@@ -16,9 +19,30 @@ public class AppointmentScheduledHandler
         {
             AppointmentId = message.AppointmentId,
             PatientId = message.PatientId,
-            ScheduledAt = message.ScheduledAt
+            ScheduledAt = scheduledAtUtc
         };
     }
+
+    public void Handle(AppointmentScheduledV2 message)
+    {
+        // V2: ScheduledAt is already UTC
+        var scheduledAtUtc = message.ScheduledAt.UtcDateTime;
+
+        if (!IsBeforeStartOfNextMonth(scheduledAtUtc))
+        {
+            return;
+        }
+
+        _storage[message.AppointmentId] = new Appointment
+        {
+            AppointmentId = message.AppointmentId,
+            PatientId = message.PatientId,
+            ScheduledAt = scheduledAtUtc
+        };
+    }
+
+    public Appointment? GetAppointment(Guid appointmentId) =>
+        _storage.TryGetValue(appointmentId, out var appointment) ? appointment : null;
 
     private static bool IsBeforeStartOfNextMonth(DateTime scheduledAt)
     {

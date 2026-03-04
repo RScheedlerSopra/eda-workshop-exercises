@@ -1,7 +1,7 @@
 
-namespace EDAWorkshop.Api.ShapeShifters.Policies;
+namespace EDAWorkshop.Api.ShapeShifters.InsurancePolicies;
 
-public record PremiumCalculatedV2(
+public record PremiumCalculated(
     Guid PolicyId, 
     decimal GrossPremium
 ) : IEvent;
